@@ -1,0 +1,117 @@
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Categories </h2>
+            <p>Add, edit or delete a category</p>
+        </div>
+        <!-- <div>
+            <input type="text" placeholder="Search Categories" class="form-control bg-white">
+        </div> -->
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <form action="/admin/category" method="post">
+                        <div class="mb-4">
+                            <label for="product_name" class="form-label">Name</label>
+                            <input type="text" placeholder="Type here"   class="form-control" id="product_name" name="name" />
+                        </div>
+                        <!-- <div class="mb-4">
+                            <label for="product_slug" class="form-label">Slug</label>
+                            <input type="text" placeholder="Type here" class="form-control" id="product_slug" name="slug" />
+                        </div> -->
+                        <!-- <div class="mb-4">
+                            <label class="form-label">Parent</label>
+                            <select class="form-select">
+                                <option>Clothes</option>
+                                <option>T-Shirts</option>
+                            </select>
+                        </div> -->
+                        <div class="mb-4">
+                            <label class="form-label">Description</label>
+                            <textarea placeholder="Type here" class="form-control" name="description"></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Create category</button>
+                        </div>
+                    </form>
+                </div>
+
+
+                <!-- category table -->
+                <div class="col-md-9">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">
+                                        <div class="form-check">
+                                            
+                                            <input class="form-check-input" type="checkbox" value="" />
+                                        </div>
+                                    </th>
+                                    <!-- <th>ID</th> -->
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <!-- <th>Slug</th> -->
+                                    <!-- <th>Order</th> -->
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <% for(var category of categories) { %>
+                                <tr>
+                                    <td class="text-center">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" />
+                                        </div>
+                                    </td>
+                                    
+                                    <td><b><%= category.name %></b></td>
+                                    <td><%= category.description %></td>
+                                    <!-- <td><%= category.slug %></td> -->
+                                    <!-- <td>1</td> -->
+                                    <td class="text-center">
+                                        <a href="/admin/edit-category/<%= category._id %>" class="btn btn-primary">Edit</a>
+                                        <input type="text" value="<%= category._id %>" id="categId-<%= category._id %>" class="d-none">
+                                        <a href="" id="dltCategory" onclick="dltCategory('<%= category._id %>')" class="btn btn-danger" >Delete</a>                    
+                                    </td>
+                                </tr>
+                                <% } %>
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div> <!-- .col// -->
+            </div> <!-- .row // -->
+        </div> <!-- card body .// -->
+    </div> <!-- card .// -->
+</section> <!-- content-main end// -->
+
+<script>
+
+        
+ function dltCategory(categId){
+    
+        $.ajax({
+            url: '/admin/category',
+            method: 'delete',
+            data: {
+               id: categId
+            },
+            beforeSend:function(){
+                return confirm("Are you sure?");
+            },
+            success: function (response) {
+               location.reload()
+            }
+        });
+
+    }
+
+
+        
+
+</script>

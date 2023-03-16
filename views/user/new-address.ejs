@@ -1,0 +1,94 @@
+<div class="container-fluid">
+    <div class="p-5">
+
+    
+
+
+
+<form action="/new-address" method="post">
+    <div class="row">
+        <div class="col-lg-9">
+            <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+            
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>First Name *</label>
+                <input type="text" class="form-control d-none" name="userId" value="<%= user._id %>"  required>
+
+                        <input type="text" class="form-control" name="fname" required>
+                    </div><!-- End .col-sm-6 -->
+
+                    <div class="col-sm-6">
+                        <label>Last Name *</label>
+                        <input type="text" class="form-control" name="lname" required>
+                    </div><!-- End .col-sm-6 -->
+                </div><!-- End .row -->
+
+                <label>Company Name (Optional)</label>
+                <input type="text" class="form-control name=company">
+
+                <label>Country *</label>
+                <input type="text" class="form-control" name="country" required>
+
+                <label>Street address *</label>
+                <input type="text" class="form-control" name="address" placeholder="House number/name and Street name" required>
+                
+                <label>District *</label>
+                <input type="text" class="form-control" name="district"  required>
+                
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>Town / City *</label>
+                        <input type="text" class="form-control" name="town" required>
+                    </div><!-- End .col-sm-6 -->
+
+                    <div class="col-sm-6">
+                        <label>State  *</label>
+                        <input type="text" class="form-control" name="state" required>
+                    </div><!-- End .col-sm-6 -->
+                </div><!-- End .row -->
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>Postcode / ZIP *</label>
+                        <input type="text" class="form-control" name="pincode" required>
+                    </div><!-- End .col-sm-6 -->
+
+                    <div class="col-sm-6">
+                        <label>Phone *</label>
+                        <input type="tel" class="form-control" name="mobile" required>
+                    </div><!-- End .col-sm-6 -->
+                </div><!-- End .row -->
+
+                <label>Email address *</label>
+                <input type="email" class="form-control" name="email" required>
+
+                <!-- <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="checkout-create-acc">
+                    <label class="custom-control-label" for="checkout-create-acc">Create an account?</label>
+                </div> -->
+
+                <!-- <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="checkout-diff-address">
+                    <label class="custom-control-label" for="checkout-diff-address">Ship to a different address?</label>
+                </div> -->
+
+                <label>Order notes (optional)</label>
+                <textarea class="form-control" cols="30" rows="4" name="order-notes" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
+
+                <div class="row">
+                    <button type="submit" class="btn btn-primary ">
+                        <span class="btn-text">Add</span>
+                       
+                    </button>
+            
+        
+                </div>
+        </div><!-- End .col-lg-9 -->
+        
+        
+    </form>
+</div>
+
+</div>

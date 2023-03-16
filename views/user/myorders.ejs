@@ -1,0 +1,74 @@
+<section class="content-main">
+    <div class="content-header">
+        <div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title">My orders</h1>
+            </div><!-- End .container -->
+        </div>
+        <!-- <div class="text-center">
+            <h2 class="content-title card-title"></h2>
+        </div> -->
+        <!-- <div>
+            <input type="text" placeholder="Search Categories" class="form-control bg-white">
+        </div> -->
+    </div>
+              <!-- category table -->
+
+              <% if (orderList.length!=0) { %>
+        <div class="card mr-3 m-0 p-0 " >
+        <div class="card-body p-0 m-0">
+            <div class="row  p-0 m-0"> 
+                <div class="col-md-12 p-0 m-0  ">
+                    <div class="table-responsive ">
+                        <table class="table table-hover p-0 m-0">
+                            <thead class="col-sm-4 p-0 m-0">
+                                <tr class="text-center p-0 m-0 ">
+                                 
+                                    <!-- <th>ID</th> -->
+                                    
+                                    <th><b>Order Date</b> </th>
+                                    <th> <b>Order ID</b></th>
+                                    <!-- <th>Mobile</th> -->
+                                    <th> <b> Order Price</b></th>
+                                    <th><b>Payment Method</b></th>
+                                    <th><b>status</b></th>
+                                    
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="col-sm-4 p-0 m-0">
+
+                                <% for(var orders of orderList) { %>
+                                <tr class="text-center ">
+                                  
+                                    
+                                    <td><b><%= orders.date.toDateString() %></b></td>
+                                    <td><%= orders.orderID %></td>
+                                    <!-- <td><%= orders.deliveryDetails.mobile %></td> -->
+                                    <td>Rs.<%= orders.totalAmount %></td>
+                                    <td><%= orders.paymentMethod %></td>
+                                    <td><%= orders.status %></td>
+
+                                    <td class="text-center text">
+                                        <a href="/order-details/<%= orders._id %>" class="btn  btn-primary">View Order</a>
+                                    </td>
+                                </tr>
+                                <% } %>
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div> <!-- .col// -->
+            </div >
+        </div>
+    </div>
+            </div> <!-- .row // -->
+        </div> <!-- card body .// -->
+    </div> <!-- card .// -->
+</section> <!-- content-main end// -->
+
+<% } else { %>
+    <a href="/products" class="btn btn-outline-dark-2 btn-block mb-3"><span>You haven't done any orders yet<BR><i class="icon-refresh"></i><BR>CONTINUE SHOPPING</span></a>
+
+
+    <% }  %>

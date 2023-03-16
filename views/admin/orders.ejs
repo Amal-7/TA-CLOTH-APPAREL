@@ -1,0 +1,61 @@
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Order List </h2>
+            <!-- <p>Lorem ipsum dolor sit amet.</p> -->
+        </div>
+        <div>
+            <input type="text" placeholder="Search order ID" class="form-control bg-white">
+        </div>
+    </div>
+    <div class="card mb-4">
+        <header class="card-header">
+            
+        </header> <!-- card-header end// -->
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#ID</th>
+                            <th scope="col">Name</th>
+                           
+                            <th scope="col">Total</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Date</th>
+                            <th scope="col" class="text-end"> Action </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for ( var order of orderList)  { %>
+                        <tr>
+                            <td><%= order.orderID %></td>
+                            <td><b><%= order.deliveryDetails.fname %> <%= order.deliveryDetails.lname %></b></td>
+                            <td><%= order.totalAmount %></td>
+                            <td><span class="badge rounded-pill alert-warning"><%= order.status %></span></td>
+                            <td><%= order.date.toDateString()%></td>
+                            <td class="text-end">
+                                <a href="/admin/order-details/<%= order._id %>" class="btn btn-md rounded font-sm">Detail</a>
+                                <!-- <div class="dropdown">
+                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">View detail</a>
+                                        <a class="dropdown-item" href="#">Edit info</a>
+                                        <a class="dropdown-item text-danger" href="#">Delete</a>
+                                    </div> -->
+                                </div> <!-- dropdown //end -->
+                            </td>
+                        </tr>
+                       
+                        <% } %>
+                       
+                     
+                      
+                        
+                    </tbody>
+                </table>
+            </div> <!-- table-responsive //end -->
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+   
+</section>

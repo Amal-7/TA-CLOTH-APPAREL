@@ -1,0 +1,36 @@
+<div class="tab-pane fade" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
+    <form action="/edit-profile" method="post"> 
+        <div class="row">
+            <div class="col-sm-6">
+                <label>full Name *</label>
+                <input type="text" class="form-control" name="name" value="<%= user.name %>"  required>
+            </div><!-- End .col-sm-6 -->
+
+        
+        </div><!-- End .row -->
+
+       
+        <label>Email address *</label>
+        <input type="email" class="form-control" name="email" value="<%= user.email %>"   required>
+
+        <label>Mobile *</label>
+        <input type="tel" class="form-control" name="mobile" value="<%= user.mobile %>"  required>
+
+        <label>Current password (leave blank to leave unchanged)</label>
+        <input type="password" class="form-control" name="old-password" >
+
+        <label>New password (leave blank to leave unchanged)</label>
+        <input type="password" class="form-control" name="new-password">
+
+        <!-- <label>Confirm new password</label>
+        <input type="password" class="form-control mb-2"> -->
+
+        <button type="submit" class="btn btn-outline-primary-2">
+            <span>SAVE CHANGES</span>
+            <i class="icon-long-arrow-right"></i>
+        </button>
+    </form>
+</div><!-- .End .tab-pane -->
+
+
+

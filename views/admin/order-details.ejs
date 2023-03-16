@@ -1,0 +1,304 @@
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Order detail</h2>
+            <p>Details for Order ID: <%= order[0].orderID %>
+            </p>
+        </div>
+    </div>
+    <div class="card">
+        <header class="card-header">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+                    <span>
+                        <i class="material-icons md-calendar_today"></i>
+                        Order Date: <%= order[0].date.getDate() %>-<%= order[0].date.getMonth() +1 %>-<%=
+                                    order[0].date.getFullYear() %>
+
+
+                    </span>
+
+                </div>
+                <!-- <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+                    <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200">
+
+                        <option>Change status</option>
+                        <option>Awaiting payment</option>
+                        <option>Confirmed</option>
+                        <option>Shipped</option>
+                        <option>Delivered</option>
+                    </select>
+                    <a class="btn btn-primary" href="/change">Save</a>
+                 <a class="btn btn-secondary print ms-2" href="#"><i class="icon material-icons md-print"></i></a> 
+                </div> -->
+            </div>
+        </header> <!-- card-header end// -->
+        <div class="card-body">
+            <div class="row mb-50 mt-20 order-info-wrap">
+                <div class="col-md-4">
+                    <article class="icontext align-items-start">
+                        <span class="icon icon-sm rounded-circle bg-primary-light">
+                            <i class="text-primary material-icons md-person"></i>
+                        </span>
+                        <div class="text">
+                            <h6 class="mb-1">Customer</h6>
+                            <p class="mb-1">
+                                <%= order[0].deliveryDetails.fname %>
+                                    <%= order[0].deliveryDetails.lname %> <br>
+                                        <%= order[0].deliveryDetails.email %> <br>
+                                            <%= order[0].deliveryDetails.mobile %>
+                            </p>
+                            <!-- <a href="#">View profile</a> -->
+                        </div>
+                    </article>
+                </div> <!-- col// -->
+                <div class="col-md-4">
+                    <article class="icontext align-items-start">
+                        <span class="icon icon-sm rounded-circle bg-primary-light">
+                            <i class="text-primary material-icons md-local_shipping"></i>
+                        </span>
+                        <div class="text">
+                            <h6 class="mb-1">Order info</h6>
+                            <p class="mb-1">
+                                Shipping: Fargo express <br> Pay method: <%= order[0].paymentMethod%> <br> Status: new
+                            </p>
+                            <!-- <a href="#">Download info</a> -->
+                        </div>
+                    </article>
+                </div> <!-- col// -->
+                <div class="col-md-4">
+                    <article class="icontext align-items-start">
+                        <span class="icon icon-sm rounded-circle bg-primary-light">
+                            <i class="text-primary material-icons md-place"></i>
+                        </span>
+                        <div class="text">
+                            <h6 class="mb-1">Deliver to</h6>
+                            <p class="mb-1">
+                                <%= order[0].deliveryDetails.address %> <br> City:<%= order[0].deliveryDetails.town %>
+                                        <br>
+                                        <%= order[0].deliveryDetails.district %> <br>
+                                            <%= order[0].deliveryDetails.pincode %>
+                            </p>
+                            <!-- <a href="#">View profile</a> -->
+                        </div>
+                    </article>
+                </div> <!-- col// -->
+            </div> <!-- row // -->
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th width="40%">Product</th>
+                                    <th width="20%">Unit Price</th>
+                                    <th width="20%">Quantity</th>
+                                    <th width="20%" class="text-end">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (var product of order) { %>
+                                    <tr>
+                                        <td>
+                                            <a class="itemside" href="#">
+                                                <div class="left">
+                                                    <img src="/product-images/<%= product.product.productImages[0] %>"
+                                                        width="40" height="40" class="img-xs" alt="Item">
+                                                </div>
+                                                <div class="info">
+                                                    <%= product.product.title %>
+                                                </div>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <%= product.product.price %>
+                                        </td>
+                                        <td> <%= product.quantity %> </td>
+                                        <td class="text-end">
+                                            <%= product.subtotal%>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+
+                                        <tr>
+                                            <td colspan="4">
+                                                <article class="float-end">
+                                                    <!-- <dl class="dlist">
+                                                <dt>Subtotal:</dt>
+                                                <dd>$973.35</dd>
+                                            </dl>
+                                            <dl class="dlist">
+                                                <dt>Shipping cost:</dt>
+                                                <dd>$10.00</dd>
+                                            </dl> -->
+                                                    <dl class="dlist mb-3">
+                                                        <dt>
+                                                            <h5>Grand total:</h5>
+                                                        </dt>
+                                                        <dd> <b class="h5">
+                                                                <%= order[0].totalAmount %>
+                                                            </b> </dd>
+                                                    </dl>
+                                                    <dl class="dlist">
+                                                        <dt class="">
+                                                            <h5>Status:</h5>
+                                                        </dt>
+                                                        <dd>
+                                                            <span id="status-span" class="badge rounded-pill alert-success text-success">
+                                                                <%= order[0].status %>
+                                                            </span>
+                                                        </dd>
+                                                    </dl>
+                                                </article>
+                                            </td>
+                                        </tr>
+                            </tbody>
+                        </table>
+                    </div> <!-- table-responsive// -->
+                </div> <!-- col// -->
+                <div class="col-lg-1"></div>
+                <div class="col-lg-4">
+                    <div class="box shadow-sm bg-light">
+
+                        <form action="#" id="order-status" >
+                            <!-- <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                <input class="form-check-input" checked="" value="Awaiting payment" name="status" type="radio">
+                                <span class="form-check-label">Awaiting payment </span>
+                            </label> -->
+
+                            <input class="d-none" value="<%= order[0]._id %>" name="id">
+
+                            <% if (order[0].status=='Confirmed' ) { %>
+                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                    <input class="form-check-input" value="Cancelled" name="status"
+                                        type="radio">
+                                    <span class="form-check-label"> Cancel </span>
+                                </label>
+                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                    <input class="form-check-input" value="Shipped" name="status" type="radio">
+                                    <span class="form-check-label"> Shipped</span>
+                                </label>
+                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                    <input class="form-check-input" value="Delivered" name="status" type="radio">
+                                    <span class="form-check-label"> Delivered </span>
+                                </label>
+
+                                <% } else if(order[0].status=='Shipped' ) { %>
+                                    <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                        <input class="form-check-input" value="Delivered" name="status" type="radio">
+                                        <span class="form-check-label"> Delivered </span>
+                                    </label>
+
+
+                                    <% } else if(order[0].status=='Delivered' || order[0].status=='Returned') { %>
+
+
+                                        <% } else if(order[0].status=='Cancelled' ) { %>
+
+                                            <% } else { %>
+                                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                                    <input class="form-check-input" value="Cancelled" name="status"
+                                                        type="radio">
+                                                    <span class="form-check-label"> Cancel </span>
+                                                </label>
+
+                                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                                    <input class="form-check-input" value="Confirmed" name="status"
+                                                        type="radio">
+                                                    <span class="form-check-label"> Confirm </span>
+                                                </label>
+                                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                                    <input class="form-check-input" value="Shipped" name="status"
+                                                        type="radio">
+                                                    <span class="form-check-label"> Shipped</span>
+                                                </label>
+                                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                                    <input class="form-check-input" value="Delivered" name="status"
+                                                        type="radio">
+                                                    <span class="form-check-label"> Delivered </span>
+                                                </label>
+                                                <% } %>
+
+
+
+
+                                                
+                                            <% if(order[0].status=='Delivered' ) { %>
+                                                <div class=" ">
+                                                    <a href="" class="btn  btn-success  disabled"
+                                                        onclick="return confirm('Are you sure you want to cancel this order' )">
+                                                        Order Delivered
+                                                    </a>
+                                                </div>
+                                                
+                                                                                
+                                                
+                                            <% } else if(order[0].status == 'Cancelled') { %>
+                                                <div class=" ">
+                                                    <a href="" class="btn btn-sm font-sm text-white btn-danger rounded disabled"
+                                                       >
+                                                        Order Cancelled
+                                                    </a>
+                                                </div>
+
+                                                <% } else if(order[0].status == 'Returned') { %>
+                                                    <div class=" ">
+                                                        <a href="" class="btn btn-sm font-sm text-white btn-danger rounded disabled"
+                                                           >
+                                                            Order Returned
+                                                        </a>
+                                                    </div>
+                                                
+                                            <% } else { %>
+                                                <button class="btn btn-primary font-sm" type="submit"> Change Status </button>
+                                        
+                                            <% } %>
+                                                
+                                          
+
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+</section> <!-- content-main end// -->
+
+
+<script>
+
+    $('#order-status').submit((e)=>{
+        console.log('submit');
+        e.preventDefault();
+
+   
+
+           $.ajax ({
+        
+            url:'/admin/change-status',
+            method:'post',
+            data:$('#order-status').serialize(),
+            success:(response)=>{
+                if(response.status){  
+                   
+                    document.getElementById('status-span').innerHTML = response.newStatus
+                    location.reload()
+                    
+                }else{
+                    
+                    
+                }
+            }
+        })
+        
+        
+             
+        
+        
+    })
+
+
+
+</script>

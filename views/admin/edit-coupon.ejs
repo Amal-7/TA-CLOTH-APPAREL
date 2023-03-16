@@ -1,0 +1,150 @@
+<section class="content-main">
+    <div class="row">
+        <div class="col-6">
+            <div class="content-header">
+                <h2 class="content-title">Add New Coupon</h2>
+               
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card mb-4">
+
+      <!-- form -->
+            <form action="#" id="couponForm" >
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>General info</h6>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="mb-4">
+                                <label class="form-label">Coupon Code</label>
+                                <input type="text" placeholder="Type here" name="code" value="<%= coupon.code %>" class="form-control">
+                            </div>
+                            <!-- <div class="mb-4">
+                                <label class="form-label">Description</label>
+                                <textarea placeholder="Type here" class="form-control" name="description" rows="4"></textarea>
+                            </div> -->
+                            <!-- <div class="mb-4">
+                                <label class="form-label">Brand name</label>
+                                <select class="form-select">
+                                    <option> Adidas </option>
+                                    <option> Nike </option>
+                                    <option> Puma </option>
+                                </select>
+                            </div> -->
+                        </div> <!-- col.// -->
+                    </div> <!-- row.// -->
+                    <hr class="mb-4 mt-0">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>Maximum Discount Price</h6>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="mb-4">
+                                <label class="form-label">Cost in INR</label>
+                                <input type="number" placeholder="00.0" name="maxDiscount" value="<%= coupon.maxDiscount %>" class="form-control">
+                            </div>
+                        </div> <!-- col.// -->
+                    </div> <!-- row.// -->
+                    <hr class="mb-4 mt-0">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>Offer Percentage</h6>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="mb-4">
+                                <label class="form-label">%</label>
+                                <input type="number" placeholder="0" name="percentage" value="<%= coupon.percentage %>" class="form-control">
+                                <input type="" placeholder="0" name="id"  value="<%= coupon._id %>" class="form-control d-none">
+                            </div>
+                        </div> <!-- col.// -->
+                    </div>
+
+                    <hr class="mb-4 mt-0">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>Category</h6>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="mb-4">
+                                <% for(var category of categories) {  %>
+                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                    <input class="form-check-input" checked="" value="<%= category.name %>" name="category" type="radio">
+                                    <span class="form-check-label"> <%= category.name %> </span>
+                                </label>
+                                <% } %>
+
+                                <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                    <input class="form-check-input" checked="" value="all" name="category" type="radio">
+                                    <span class="form-check-label"> All </span>
+                                </label>
+
+                               
+                            </div>
+                        </div> <!-- col.// -->
+                    </div> <!-- row.// -->
+                    
+                    <hr class="mb-4 mt-0">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>Minimum Cart Price</h6>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="mb-4">
+                                <label class="form-label">Cost in INR</label>
+                                <input type="number" placeholder="0" name="minCartPrice" value="<%= coupon.minCartPrice %>" class="form-control">
+                            </div>
+                        </div> <!-- col.// -->
+                    </div>
+
+                    <hr class="mb-4 mt-0">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>Coupon Expiry</h6>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="mb-4">
+                                <label class="form-label">Date</label>
+                                <input type="date" placeholder="" name="expiry" value="<%= coupon.expiry %>" class="form-control">
+                            </div>
+                        </div> <!-- col.// -->
+                    </div> <!-- row.// -->
+                    
+                    <div>
+                        <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button> -->
+                        <button type="submit" onclick=" editCoupon()" class="btn btn-md rounded font-xxl hover-up">Add</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+<script>
+
+function editCoupon(){
+        $('#couponForm').submit((e)=>{
+            e.preventDefault()
+
+            $.ajax({
+                url:'/admin/coupons',
+                method:'put',
+                data:$('#couponForm').serialize(),
+                success:(response)=>{
+                    window.location.replace('/admin/coupons')
+                }
+
+            })
+        })
+    }
+
+</script>
+
+
+

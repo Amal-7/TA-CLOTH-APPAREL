@@ -1,0 +1,69 @@
+<div class="container-fluid">
+    <div class="heading heading-center mb-3">
+       
+
+        <ul class="nav nav-pills justify-content-center" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="new-women-link" data-toggle="tab" href="#new-women-tab" role="tab" aria-controls="new-women-tab" aria-selected="true">Men Products</a>
+            </li>
+        </ul>
+    </div><!-- End .heading -->
+
+    <div class="tab-content">
+        <div class="tab-pane p-0 fade show active" id="new-women-tab" role="tabpanel" aria-labelledby="new-women-link">
+            <div class="products">
+                <div class="row justify-content-center">
+
+                    <% for (var product of products) { %>
+                    <div class="col-6 col-md-4 col-lg-3 col-xl-5col">
+                        <div class="product product-7 text-center">
+                            <figure class="product-media">
+                                <!-- <span class="product-label label-circle label-sale">Sale</span> -->
+                                <a href="/product/<%= product._id %>">
+                                    <img src="/product-images/<%= product.productImages[0] %>" alt="Product image" class="product-image">
+                                    <img src="/product-images/<%= product.productImages[0] %>" alt="Product image" class="product-image-hover">
+                                </a>
+
+                                <div class="product-action-vertical">
+                                    <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                    <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
+                                </div><!-- End .product-action-vertical -->
+
+                                <div class="product-action">
+                                    <% if(locals.user) { %>
+                                    <button onclick="addToCart('<%= product._id %>')" class="btn-product btn-cart" ><span>add to cart</span></button>
+                                    <% } else { %>
+                                    <a href="/login" class="btn-product btn-cart"><span>add to cart</span></a>
+                                    <% } %>
+                                </div><!-- End .product-action -->
+                            </figure><!-- End .product-media -->
+
+                            <div class="product-body">
+                                <h3 class="product-title"><a href="/product/<%= product._id%>"><%= product.title %></a></h3><!-- End .product-title -->
+                                <div class="product-price">
+                                    <span class="new-price"><%= product.price %></span>
+                                    <span class="old-price"></span>
+                                </div><!-- End .product-price -->
+                            </div><!-- End .product-body -->
+                        </div><!-- End .product -->
+                    </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+
+                    <% } %>
+
+                </div><!-- End .row -->
+            </div><!-- End .products -->
+        </div><!-- .End .tab-pane -->
+    </div><!-- End .tab-content -->
+
+    <!--Pagination -->
+
+    
+
+    <!-- <div class="more-container text-center mt-2">
+        <a href="#" class="btn btn-outline-dark-3 btn-more"><span>Load more</span><i class="icon-long-arrow-right"></i></a>
+    </div> -->
+
+    <hr class="mt-0 mb-6">
+    
+    
+</div><!-- End .container-fluid -->

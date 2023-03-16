@@ -1,0 +1,81 @@
+<section class="content-main p-2">
+    <div class="content-header">
+        
+        <!-- <div class="text-center">
+            <h2 class="content-title card-title"></h2>
+        </div> -->
+        <!-- <div>
+            <input type="text" placeholder="Search Categories" class="form-control bg-white">
+        </div> -->
+    </div>
+              <!-- category table -->
+
+           
+        <div class="card  " >
+        <div class="card-body ">
+            <div class="row  " style="display: flex; justify-content: center; align-items: center;"> 
+                <div class="col-md-9">
+                    <div class="table-responsive ">
+                        <table class="table table-hover ">
+                            <thead class="">
+                                <tr class="text-center">
+                                 
+                                    <td><b>Address</b>
+                                        
+                                    </td>
+                                   
+                                    
+                                  
+                                   
+                                </tr>
+                            </thead>
+                            <tbody class="">
+
+
+                                <% for (var address of addresses) { %>
+                             <a href="">
+
+                                <tr >
+                                 
+                                    <td class="p-5 ">
+                                        <article class="icontext align-items-start">
+                                            <span class="icon icon-sm rounded-circle bg-primary-light">
+                                                <i class="text-primary material-icons md-place"></i>
+                                            </span>
+                                            <div class="text">
+                                                <h6 class="mb-1">Deliver to</h6>
+                                                <p class="mb-1">
+                                                    <%= address.addresses.fname %> <%= address.addresses.lname %> <br><%= address.addresses.address %><br> City:<%= address.addresses.town %>
+                                                            <br>
+                                                            <%= address.addresses.district %> <br>
+                                                                <%= address.addresses.pincode %>
+                                                </p>
+                                                <a href="/change-address-to/<%= address.addresses.addressId %>" class="btn btn-primary">select</a>
+                                            </div>
+                                        </article>
+                                        
+                                    </td>
+                                    
+
+                                </tr>
+
+                                
+                                <% }  %>
+                               
+                              
+                                
+                                
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div> <!-- .col// -->
+            </div >
+        </div>
+    </div>
+            </div> <!-- .row // -->
+        </div> <!-- card body .// -->
+    </div> <!-- card .// -->
+</section> <!-- content-main end// -->
+
+

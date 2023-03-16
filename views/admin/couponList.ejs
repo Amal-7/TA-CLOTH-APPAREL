@@ -1,0 +1,136 @@
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Coupon List</h2>
+            
+        </div>
+        
+    </div>
+    <div class="card mb-4">
+        <header class="card-header">
+            <div class="row align-items-center">
+               
+            </div>
+        </header> <!-- card-header end// -->
+        <div class="card-body">
+            <article class="itemlist">
+                <div class="row align-items-center">
+                   
+                    <section class="intro " >
+                        <div class="gradient-custom-1 h-auto min-vh-100 ">
+                          <div class="mask d-flex  h-100">
+                            <div class="container">
+                              <div class="row justify-content-center ">
+                                <div class="col-12 ">
+                                  <div class="table-responsive bg-white p-3">
+                                    <table id="couponTable" class="display table mb-0 mt-4 " >
+                                      <thead>
+                                        <tr>
+                                          <th scope="col">Coupon Code</th>
+                                          <th scope="col">Offer Percentage</th>
+                                          <th scope="col">Max Discount</th>
+                                          <th scope="col">Min Cart Price</th>
+                                          <th scope="col">Category</th>
+                                          <th scope="col">Expiry Date</th>
+                                          <th class="text-center" scope="col">Actions</th>
+                                          
+                      
+                                          
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <% if(locals.coupons){ %>
+                                        <% for( var coupon of coupons) { %>
+                                        <tr>
+                                          <td><%= coupon.code %></td>
+                                          <td><%= coupon.percentage%>%</td>
+                                          <td><%= coupon.maxDiscount %></td>
+                                          <td><%= coupon.minCartPrice%></td>
+                                          <td><%= coupon.category %></td>
+                                          <td><%= coupon.expiry %></td>
+
+                                            <td>
+                                                <a href="" onclick="deleteCoupon('<%= coupon._id %>')" class="btn-sm btn-danger" >Remove</a>                         
+                                                <a href="/admin/coupons/<%= coupon._id %>" class="btn-sm btn-primary" >Edit</a>                         
+
+                                            </td>
+                                          
+                                        </tr>
+                                        <% } %>
+                                        <% } %>
+                      
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </section>
+                      
+                     
+                </div> <!-- row .// -->
+            </article> <!-- itemlist  .// -->
+           
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+    <!-- <div class="pagination-area mt-30 mb-50">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-start">
+                <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                <li class="page-item"><a class="page-link" href="#">02</a></li>
+                <li class="page-item"><a class="page-link" href="#">03</a></li>
+                <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                <li class="page-item"><a class="page-link" href="#">16</a></li>
+                <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
+            </ul>
+        </nav>
+    </div> -->
+</section> <!-- content-main end// -->
+
+
+<script>
+    $(document).ready( function () {
+     $('#couponTable').DataTable();
+ } );
+    
+ </script>
+
+<script>
+    function deleteCoupon(couponId){
+        $.ajax({
+            url:'/admin/coupons',
+            method:'delete',
+            data:{
+                id:couponId
+            },
+            beforeSend:function(){
+                return confirm('Please confirm to delete')
+            },
+            success:(resolve)=>{
+                location.reload()
+            }
+            
+        })
+    }
+
+    // function editCoupon(couponId){
+    //     $.ajax({
+    //         url:'/admin/coupons',
+    //         method:'patch',
+    //         data:{
+    //             id:couponId
+    //         },
+    //         beforeSend:function(){
+    //             return confirm('Please confirm to edit')
+    //         },
+    //         success:(resolve)=>{
+    //             location.reload()
+    //         }
+            
+    //     })
+    // }
+
+
+</script>

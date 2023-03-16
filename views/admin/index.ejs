@@ -1,0 +1,349 @@
+   
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Dashboard </h2>
+                    <p>Whole data about your business here</p>
+                </div>
+                <!-- <div>
+                    <a href="#" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Create report</a>
+                </div> -->
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="card card-body mb-4">
+                        <article class="icontext">
+                            <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
+                            <div class="text">
+                                <h6 class="mb-1 card-title">Revenue</h6>
+                                <span>₹<%= dashboard.totalAmount %></span>
+                                <span class="text-sm">
+                                    Shipping fees are not included
+                                </span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card card-body mb-4">
+                        <article class="icontext">
+                            <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success material-icons md-local_shipping"></i></span>
+                            <div class="text">
+                                <h6 class="mb-1 card-title">Orders</h6> <span><%= dashboard.count %></span>
+                                <span class="text-sm">
+                                    Excluding orders in transit
+                                </span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card card-body mb-4">
+                        <article class="icontext">
+                            <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning material-icons md-qr_code"></i></span>
+                            <div class="text">
+                                <h6 class="mb-1 card-title">Products</h6> <span><%= locals.totalProducts %></span>
+                                <span class="text-sm">
+                                    In <%= locals.categCount %> Categories
+                                </span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card card-body mb-4">
+                        <article class="icontext">
+                            <span class="icon icon-sm rounded-circle bg-info-light"><i class="text-info material-icons md-shopping_basket"></i></span>
+                            <div class="text">
+                                <h6 class="mb-1 card-title">Monthly Earning</h6> <span><%= locals.earnings %></span>
+                                <span class="text-sm">
+                                    Based in your local time.
+                                </span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-8 col-lg-12">
+                    <div class="card mb-4">
+                        <article class="card-body">
+                            <h5 class="card-title">Sale statistics</h5>
+                            <canvas id="myChart" height="120px"></canvas>
+                        </article>
+                    </div>
+                   
+                </div>
+               
+            </div>
+
+            <div class="col-xl-8 col-lg-12">
+                <div class="card">
+                  <h5 class="card-title pt-3 ps-3">payment-method <span>| All</span></h5>
+                    <div  id="piechart" style="width: 700px; height: 500px;"></div>
+                </div>
+              </div>
+
+
+              <div class="col-xl-8 col-lg-12">.
+                <div class="card">
+    
+                  <div class="card-body bg-white">
+                    <h5 class="card-title">Order Status <span>| All</span></h5>
+    
+                    <div id="trafficChart" style="min-height:400px;" class="echart"></div>
+    
+                    
+    
+                  </div>
+    
+                  </div>
+                </div>
+    
+    
+    
+              </div>
+          
+            <!-- <div class="pagination-area mt-30 mb-50">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-start">
+                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                        <li class="page-item"><a class="page-link" href="#">02</a></li>
+                        <li class="page-item"><a class="page-link" href="#">03</a></li>
+                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                        <li class="page-item"><a class="page-link" href="#">16</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
+                    </ul>
+                </nav>
+            </div>  -->
+        </section> <!-- content-main end// -->
+       
+    
+   
+
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:32:57 GMT -->
+
+<script src="/js/vendors/chart.js"></script>
+
+<script>
+
+
+
+    (function ($) {
+    "use strict";
+
+    /*Sale statistics Chart*/
+    if ($('#myChart').length) {
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'line',
+            
+            // The data for our dataset
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                        label: 'Sales',
+                        tension: 0.3,
+                        fill: true,
+                        backgroundColor: 'rgba(44, 120, 220, 0.2)',
+                        borderColor: 'rgba(44, 120, 220)',
+                        data: [<%= locals.month[0] %>, <%= locals.month[1] %>, <%= locals.month[2] %>, <%= locals.month[3] %>, <%= locals.month[4] %>, <%= locals.month[5] %>, <%= locals.month[6] %>, <%= locals.month[7] %>, <%= locals.month[8] %>, <%= locals.month[9] %>, <%= locals.month[10] %>, <%= locals.month[11] %>]
+                    },
+                    // {
+                    //     label: 'Users',
+                    //     tension: 0.3,
+                    //     fill: true,
+                    //     backgroundColor: 'rgba(4, 209, 130, 0.2)',
+                    //     borderColor: 'rgb(4, 209, 130)',
+                    //     data: [40, 20, 17, 9, 23, 35, 39, 30, 34, 25, 27, 17]
+                    // },
+                    // {
+                    //     label: 'Products',
+                    //     tension: 0.3,
+                    //     fill: true,
+                    //     backgroundColor: 'rgba(380, 200, 230, 0.2)',
+                    //     borderColor: 'rgb(380, 200, 230)',
+                    //     data: [30, 10, 27, 19, 33, 15, 19, 20, 24, 15, 37, 6]
+                    // }
+
+                ]
+            },
+            options: {
+                plugins: {
+                legend: {
+                    labels: {
+                    usePointStyle: true,
+                    },
+                }
+                }
+            }
+        });
+    } //End if
+
+    /*Sale statistics Chart*/
+    // if ($('#myChart2').length) {
+    //     var ctx = document.getElementById("myChart2");
+    //     var myChart = new Chart(ctx, {
+    //         type: 'bar',
+    //         data: {
+    //         labels: ["900", "1200", "1400", "1600"],
+    //         datasets: [
+    //             {
+    //                 label: "US",
+    //                 backgroundColor: "#5897fb",
+    //                 barThickness:10,
+    //                 data: [233,321,783,900]
+    //             }, 
+    //             {
+    //                 label: "Europe",
+    //                 backgroundColor: "#7bcf86",
+    //                 barThickness:10,
+    //                 data: [408,547,675,734]
+    //             },
+    //             {
+    //                 label: "Asian",
+    //                 backgroundColor: "#ff9076",
+    //                 barThickness:10,
+    //                 data: [208,447,575,634]
+    //             },
+    //             {
+    //                 label: "Africa",
+    //                 backgroundColor: "#d595e5",
+    //                 barThickness:10,
+    //                 data: [123,345,122,302]
+    //             },
+    //         ]
+    //         },
+    //         options: {
+    //             plugins: {
+    //                 legend: {
+    //                     labels: {
+    //                     usePointStyle: true,
+    //                     },
+    //                 }
+    //             },
+    //             scales: {
+    //                 y: {
+    //                     beginAtZero: true
+    //                 }
+    //             }
+    //         }
+    //     });
+    // } //end if
+    
+})(jQuery);
+</script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  google.charts.load('current', { 'packages': ['corechart'] });
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+
+    var data = google.visualization.arrayToDataTable([
+      ['Task', 'Hours per Day'],
+    <% if(payMethod.COD) { %>
+        ['COD',  <%= payMethod.COD %>]  ,
+      <% } %>
+
+
+     <% if(payMethod.paypal) { %>
+         ['PAYPAL',  <%= payMethod.paypal %>],
+      <% } %>
+
+      <% if(payMethod.razorpay) { %>
+       ['RAZORPAY',  <%= payMethod.razorpay %>],
+      <% } %>
+
+
+    ]);
+
+    var options = {
+      title: 'total sales'
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+    chart.draw(data, options);
+  }
+
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+      echarts.init(document.querySelector("#trafficChart")).setOption({
+        tooltip: {
+          trigger: 'item'
+        },
+        legend: {
+          top: '5%',
+          left: 'center'
+        },
+        series: [{
+          name: "",
+          type: 'pie',
+          radius: ['40%', '70%'],
+          avoidLabelOverlap: false,
+          label: {
+            show: false,
+            position: 'center'
+          },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: '18',
+              fontWeight: 'bold'
+            }
+          },
+          labelLine: {
+            show: false
+          },
+          data: [
+
+          <% if(orderStatus.pending) { %>
+           
+                {
+            
+                    value: <%= locals.orderStatus.pending %>,
+                    name: 'pending'
+           
+              
+              },
+
+              <% } %>
+           
+          {
+            value: <%= locals.orderStatus.placed %>,
+            name: 'placed'
+          },
+          {
+            value: <%= locals.orderStatus.Returned %>,
+            name: 'Returned'
+          },
+          
+          {
+            value: <%= locals.orderStatus.Cancelled %>,
+            name: 'cancel'
+          },
+          {
+            <% if(orderStatus.shipped) { %>
+            value: <%= locals.orderStatus.shipped %>,
+            name: 'shipped'
+            <% } %>
+          },
+          {
+            value: <%= locals.orderStatus.Delivered %>,
+            name: 'delivered'
+          },
+
+          ]
+        }]
+      });
+    });
+
+  </script>
+
