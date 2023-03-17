@@ -8,8 +8,8 @@ const paypal = require('paypal-rest-sdk');
 
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
-    'client_id': process.env.PAYPAL_SECRET_ID,
-    'client_secret': process.env.PAYPAL_KEY_ID
+    'client_id': process.env.PAYPAL_KEY_ID,
+    'client_secret': process.env.PAYPAL_SECRET_ID
 });
 
 
