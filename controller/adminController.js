@@ -1,5 +1,4 @@
 const layout = 'admin-layout';
-const { mountpath } = require('../app');
 const adminHelper = require('../Model/helpers/admin-helpers');
 
 

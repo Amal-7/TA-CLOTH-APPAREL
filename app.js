@@ -6,8 +6,6 @@ var logger = require('morgan');
 var expressLayouts = require('express-ejs-Layouts');
 var db = require('./Model/connection');
 var session = require('express-session');
-
-
 var userRouter = require('./routes/user');
 var adminRouter = require('./routes/admin');
 const dotenv = require('dotenv')
