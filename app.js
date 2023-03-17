@@ -8,8 +8,6 @@ var db = require('./Model/connection');
 var session = require('express-session');
 var userRouter = require('./routes/user');
 var adminRouter = require('./routes/admin');
-const dotenv = require('dotenv')
-dotenv.config({path:"./env"})
 var app = express();
 
 
