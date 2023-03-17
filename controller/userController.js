@@ -12,8 +12,8 @@ require('dotenv').config();
 
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
-    'client_id': 'AWOiqPgVhuu2hAp2FrlP2yRQskxuSah-2LNCEf-5Xm4WCX-XrVJ4Aj-rPFwH3Il65JAMHYBHxkddEFZO',
-    'client_secret': 'EMwtwRwHgkLwFXWedFTJ7IVdOk6U_PtWAUBhdkAkwePZLLLpksKIx6Zz_BRNs0rV0FFWz_wP17Du92-I'
+    'client_id': process.env.PAYPAL_SECRET_ID,
+    'client_secret': process.env.PAYPAL_KEY_ID
 });
 
 
