@@ -1,12 +1,7 @@
 var db = require('../connection')
 var {USERCOLLECTION,PRODUCTCOLLECTION,CARTCOLLECTION,ORDERCOLLECTION,PRODUCTCATEGORY,COUPONCOLLECTION} = require('../userCollection')
 var bcrypt = require('bcrypt')
-const { promiseImpl } = require('ejs')
 const { ObjectId } = require('mongodb')
-const { product } = require('../../controller/userController')
-const { response } = require('../../app')
-const { user } = require('../../controller/authentication')
-const userCollection = require('../userCollection')
 
 
 

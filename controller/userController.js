@@ -1,13 +1,9 @@
 var userHelper = require('../Model/helpers/user-helpers');
-var otp = require('../Model/verfication');
-const session = require('express-session');
-const { response, json } = require('express');
-const { womenProducts } = require('../Model/helpers/user-helpers');
-const client = require('twilio')(otp.accountId, otp.authToken);
+require('dotenv').config();
+const client = require('twilio')(process.env.ACCOUNT_ID, process.env.AUTH_TOKEN);
 const Razorpay =require('razorpay')
 const crypto =require('crypto')
 const paypal = require('paypal-rest-sdk');
-require('dotenv').config();
 
 
 paypal.configure({
@@ -21,7 +17,7 @@ paypal.configure({
 module.exports = {
     home: async (req, res, next) => {
         try{
-
+            console.log(process.env.ACCOUNT_ID);
         let user = req.session.user
         let menProducts = await userHelper.menProducts()
         let womenProducts = await userHelper.womenProducts()
@@ -168,7 +164,7 @@ module.exports = {
                     req.session.mobile = req.body.mobile;
                     req.session.user = data.user
                     console.log(otp.serviceId, 'service id');
-                    client.verify.services(otp.serviceId)
+                    client.verify.services(process.env.serviceId)
                         .verifications.create({
                             to: `+91${req.body.mobile}`,
                             channel: 'sms',
@@ -192,7 +188,7 @@ module.exports = {
             res.redirect('/');
         } else {
 
-            client.verify.services(otp.serviceId)
+            client.verify.services(process.env.serviceId)
                 .verificationChecks.create({
                     to: `+91${req.session.mobile}`,
                     code: req.body.otp
@@ -243,7 +239,7 @@ module.exports = {
 
                     req.session.mobile = req.body.mobile;
                     req.session.user = data.user
-                    client.verify.services(otp.serviceId)
+                    client.verify.services(process.env.serviceId)
                         .verifications.create({
                             to: `+91${req.body.mobile}`,
                             channel: 'sms',
@@ -269,7 +265,7 @@ module.exports = {
             res.redirect('/');
         } else {
 
-            client.verify.services(otp.serviceId)
+            client.verify.services(process.env.serviceId)
                 .verificationChecks.create({
                     to: `+91${req.session.mobile}`,
                     code: req.body.otp

@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongodb')
 var db = require('../connection')
 var {ADMINCOLLECTION,USERCOLLECTION,PRODUCTCOLLECTION,CARTCOLLECTION,ORDERCOLLECTION,PRODUCTCATEGORY,COUPONCOLLECTION}= require('../userCollection')
-// var objectId = require('mongodb').ObjectId
+
 
 module.exports = {
     adminLogin:(userDAta)=>{
