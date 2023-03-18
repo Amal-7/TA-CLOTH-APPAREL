@@ -109,7 +109,8 @@ module.exports = {
         try{
         let user = req.session.user
         let address = await userHelper.defaultAddress(user._id)
-        res.render('user/myprofile', { user, address })
+        let cartCount = await userHelper.cartProdCount(user._id);
+        res.render('user/myprofile', { user, address,cartCount})
     } catch (error) {
         res.render('error', { message: error.message, code: 500, layout: 'error-layout' });  
         }
@@ -439,15 +440,15 @@ module.exports = {
         let discount = parseInt(req.body.discount) || 0
         if (req.body.discount) { cartPrice = cartPrice - discount }
 
-        userHelper.placeOrder(req.body, user._id, cartPrice, products.products, user,discount).then((response) => {
+        userHelper.placeOrder(req.body, user._id, cartPrice, products.products, user,discount).then(async(response) => {
             console.log('response=',response);
             let orderID = response.orderID
             req.session.orderID = orderID
             req.session.total = response.totalAmount
             let total = response.totalAmount
-
+             let cartCount = 0
             if (paymentMethod == 'COD') {
-                res.render('user/order-confirmation', { user, cartPrice, orderID })
+                res.render('user/order-confirmation', { user, cartPrice, orderID,cartCount })
 
             } else if (paymentMethod == 'paypal') {
 
@@ -595,7 +596,7 @@ module.exports = {
                 console.log(JSON.stringify(payment));
 
                 userHelper.paymentStatusChange(orderID, user._id).then((response) => {
-                    res.render('user/order-confirmation', { user, orderID })
+                    res.render('user/order-confirmation', { user, orderID,cartCount:0 })
                     req.session.orderID = null
 
                 })
@@ -615,7 +616,7 @@ module.exports = {
         let user = req.session.user
         let orderID = req.session.orderID
         userHelper.paymentStatusChange(orderID, user._id).then((response) => {
-            res.render('user/order-confirmation', { user, orderID })
+            res.render('user/order-confirmation', { user, orderID,cartCount:0 })
             req.session.orderID = null
 
         })
@@ -626,8 +627,9 @@ module.exports = {
     myOrders: async (req, res) => {
         try{
         let user = req.session.user
+        let cartCount = await userHelper.cartProdCount(user._id)
         userHelper.orders(user._id).then((orderList) => {
-            res.render('user/myorders', { user, orderList })
+            res.render('user/myorders', { user, orderList ,cartCount})
         })
     } catch (error) {
         res.render('error', { message: error.message, code: 500, layout: 'error-layout' });  
@@ -636,6 +638,7 @@ module.exports = {
     orderDetails: async (req, res) => {
         try{
         let user = req.session.user
+        let cartCount = await userHelper.cartProdCount(user._id)
         userHelper.orderDetails(req.params.id).then((orderData) => {
             console.log('orderDetails',orderData);
             let days;
@@ -648,7 +651,7 @@ module.exports = {
                 console.log(diffDays + " days");
                 days = diffDays
             }
-            res.render('user/order-details', { user, orderData, days })
+            res.render('user/order-details', { user, orderData, days,cartCount })
         })
     } catch (error) {
         res.render('error', { message: error.message, code: 500, layout: 'error-layout' });  
@@ -676,10 +679,11 @@ module.exports = {
 
     },
 
-    addAddress: (req, res) => {
+    addAddress: async(req, res) => {
         try{
         let user = req.session.user
-        res.render('user/new-address', { user })
+        let cartCount = await userHelper.cartProdCount(user._id)
+        res.render('user/new-address', { user,cartCount})
     } catch (error) {
         res.render('error', { message: error.message, code: 500, layout: 'error-layout' });  
         }
@@ -696,11 +700,13 @@ module.exports = {
     }
     ,
 
-    changeAddress: (req, res) => {
+    changeAddress:async (req, res) => {
         try{
+
         let user = req.session.user
+        let cartCount = await userHelper.cartProdCount(user._id)
         userHelper.userAddresses(user._id).then((addresses) => {
-            res.render('user/change-address', { user, addresses })
+            res.render('user/change-address', { user, addresses,cartCount })
 
         })
     } catch (error) {
@@ -719,34 +725,12 @@ module.exports = {
         }
     },
 
-    renderAdminOrders: async (req, res) => {
-        try{
-        let pageCount = req.query.page || 1
-        let pageNum = parseInt(pageCount)
-        console.log(pageNum, ':pagenumber');
-        let productsTotal = await userHelper.getAllProducts();
-        let totalProducts = productsTotal.length
-        console.log(totalProducts, 'totalordersssss');
-        let lmt = 10
-        let pages = [];
-        for (let i = 1; i <= Math.ceil(totalProducts / lmt); i++) {
-            pages.push(i)
-        }
-        console.log(pages, 'pagesssss');
-
-        userHelper.totalOrderView(pageNum, lmt).then((products) => {
-            res.render('adminorders', { admin: true, products, pages })
-        })
-    } catch (error) {
-        res.render('error', { message: error.message, code: 500, layout: 'error-layout' });  
-        }
-
-    },
+   
 
     applyCoupon: (req, res) => {
         try{
         let user = req.session.user
-        console.log(req.body, 'flkdjsf');
+        
         userHelper.couponCheck(req.body, user._id).then((discount) => {
 
             res.send({ status: true, discount })
@@ -759,34 +743,52 @@ module.exports = {
     },
     
 
-    getMenProducts:(req,res)=>{
+    getMenProducts:async(req,res)=>{
         try{
+            let cartCount;
+            let user;
+            if(req.session.userLoggedIn){
+                 user = req.session.user
+                 cartCount = await userHelper.cartProdCount(user._id)
+            }
             userHelper.menProducts().then((products=>{
-                res.render('user/shopMen',{products})
+                res.render('user/shopMen',{products,cartCount,user})
             }))
         }catch(error){
             res.render('error',{message:error.message,code: 500, layout: 'error-layout'})
         }
     },
 
-    getWomenProducts:(req,res)=>{
+    getWomenProducts:async(req,res)=>{
         try{
+            let cartCount;;
+            let user
+            if(req.session.userLoggedIn){
+                user = req.session.user
+                 cartCount = await userHelper.cartProdCount(user._id)
+            }
             userHelper.womenProducts().then((products=>{
-                res.render('user/shopWomen',{products})
+                res.render('user/shopWomen',{products,cartCount,user})
             }))
         }catch(error){
             res.render('error',{message:error.message,code: 500, layout: 'error-layout'})
         }
     },
 
-    searchProduct:(req,res)=>{
+    searchProduct:async(req,res)=>{
         try{
+            let cartCount;
+            let user
+            if(req.session.userLoggedIn){
+                user = req.session.user
+                 cartCount = await userHelper.cartProdCount(user._id)
+            }
             
             userHelper.search(req.query.word).then((products)=>{
-                res.render('user/search',{products})
+                res.render('user/search',{products,cartCount,user})
 
             }).catch((result)=>{
-                res.render('user/search',{result})
+                res.render('user/search',{result,cartCount,user})
             })
         }catch(error){
             res.render('error',{message:error.message,code: 500, layout: 'error-layout'})
