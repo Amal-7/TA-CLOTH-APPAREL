@@ -838,6 +838,7 @@ couponCheck:(data,userId)=>{
     data.total = parseInt(data.total)
     return new Promise(async(resolve,reject)=>{
        let coupon = await db.get().collection(COUPONCOLLECTION).findOne({code:data.code})
+       console.log(coupon,'coupon');
        if(coupon){
          let expiryDate = new Date(coupon.expiry)
          let newDate = new Date()

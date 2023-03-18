@@ -440,6 +440,7 @@ module.exports = {
         if (req.body.discount) { cartPrice = cartPrice - discount }
 
         userHelper.placeOrder(req.body, user._id, cartPrice, products.products, user,discount).then((response) => {
+            console.log('response=',response);
             let orderID = response.orderID
             req.session.orderID = orderID
             req.session.total = response.totalAmount
@@ -456,8 +457,8 @@ module.exports = {
                         "payment_method": "paypal"
                     },
                     "redirect_urls": {
-                        "return_url": "http://localhost:3000/success",
-                        "cancel_url": "http://localhost:3000/cancel"
+                        "return_url": "taclothapparels.shop/success",
+                        "cancel_url": "taclothapparels.shop/cancel"
                     },
                     "transactions": [{
                         "item_list": {
@@ -567,6 +568,7 @@ module.exports = {
     // paypal order success
     paypalSucces: (req, res) => {
         try{
+        console.log('query',req.query);
         const payerId = req.query.PayerID;
         const paymentId = req.query.paymentId;
         let orderID = req.session.orderID
