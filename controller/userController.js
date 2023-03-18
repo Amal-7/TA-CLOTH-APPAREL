@@ -457,8 +457,8 @@ module.exports = {
                         "payment_method": "paypal"
                     },
                     "redirect_urls": {
-                        "return_url": "taclothapparels.shop/success",
-                        "cancel_url": "taclothapparels.shop/cancel"
+                        "return_url": "https://taclothapparels.shop/success",
+                        "cancel_url": "https://taclothapparels.shop/cancel"
                     },
                     "transactions": [{
                         "item_list": {
