@@ -108,19 +108,19 @@
                                     <div class="details-filter-row details-row-size">
                                         <label for="qty">Qty:</label>
                                         <div class="product-details-quantity">
-                                            <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
+                                            <input type="number" id="qty" class="form-control"  value="1" min="1" max="10" step="1" data-decimals="0" required>
                                         </div><!-- End .product-details-quantity -->
                                     </div><!-- End .details-filter-row -->
 
                                     <div class="product-details-action">
                                         <div class=" product product-7 text-center">
                                             <% if(locals.user) { %>
-                                                <button onclick="addToCart('<%= product._id %>')" class="btn-product btn-cart" ><span>add to cart</span></button>
+                                                <button onclick="addToCartQty('<%= product._id %>')" class="btn-product btn-cart" ><span>add to cart</span></button>
                                                 <% } else { %>
                                                 <a href="/login" class="btn-product btn-cart"><span>add to cart</span></a>
                                                 <% } %>
 
-                                        </div>
+                                                </div>
 
                                         <div class="details-action-wrapper">
                                             <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
@@ -204,4 +204,44 @@
             </div><!-- End .page-content -->
         </section>
 
+
+        <script>
+
+function addToCartQty(proId){
+    let qnty = $('#qty').val()
+    console.log(qnty)
+    $.ajax
+        ({
+            url:'/addToCart',
+            method:'post',
+            data:{
+                prodId:proId,
+                qty:qnty
+            },
+            success:(response)=>{
+                if(response.status){
+                    Toastify({
+                    text: "Item Added To Cart",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "center",  
+                    style: {
+                        background: '#FA8072',
+                    
+                    },
+                    }).showToast(); 
+                
+            
+            if(response.newToCart){
+                    let count = $('#cart-count').html()
+                    count = parseInt(count)+1
+                    $('#cart-count').html(count)
+                }
+            }
+        }
+        })
+    }
+
+            
+        </script>
         

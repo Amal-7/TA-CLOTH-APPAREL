@@ -2,8 +2,11 @@ var express = require('express');
 var router = express.Router();
 const {home,loginPage,userLogin,userSignup,userLogout,userProfile,editProfile,logOtp,numVerify,otpVerify,
     forgotPassword,numVerifyReset,resetOtpVerify,resetPassword,product,
-    products,addToCart,cart,changeProdQty,cartItemDlt,checkOut,placeOrder,myOrders,orderDetails,orderReturn,orderCancel,addAddress,newAddress,changeAddress,
-    changeAddressTo,paypalSucces,applyCoupon,getMenProducts,getWomenProducts,searchProduct, verifyPayment,verifyRazorpay,razorpaySuccess} = require('../controller/userController');
+    products,addToCart,cart,changeProdQty,cartItemDlt,checkOut,placeOrder,
+    myOrders,orderDetails,orderReturn,orderCancel,addAddress,newAddress,
+    changeAddress,changeAddressTo,paypalSucces,applyCoupon,getMenProducts,
+    getWomenProducts,searchProduct, verifyPayment,verifyRazorpay,razorpaySuccess,addToCartFromPage,
+    } = require('../controller/userController');
 const {user} = require('../controller/authentication');
 
 
@@ -54,6 +57,8 @@ router.get('/product/:id',product);
 
 /*add to cart*/ 
 router.get('/addToCart/:id',addToCart);
+/* add to cart from procuct page*/
+router.post('/addToCart',addToCartFromPage);
 
 /* Cart Details*/ 
 router.route('/cart')

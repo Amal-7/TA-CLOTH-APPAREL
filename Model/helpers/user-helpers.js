@@ -268,6 +268,50 @@ getProduct:(id)=>{
             }
         })
     },
+
+    addProductToCart:(data,userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            data.qty = parseInt(data.qty)
+           
+            let prodObj = {
+                item: ObjectId(data.prodId),
+                quantity: data.qty
+            }
+            let userCart = await db.get().collection(CARTCOLLECTION).findOne({ user: ObjectId(userId) })
+            if(userCart){
+                let proExist = userCart.products.findIndex(product => product.item == data.prodId)
+                
+                if (proExist!=-1) {
+                    db.get().collection(CARTCOLLECTION).updateOne({user:ObjectId(userId), 'products.item': ObjectId(data.prodId) },
+                        {
+                            $set: { 'products.$.quantity': data.qty }
+                        }).then(() => {
+                            resolve({status:true})
+                        })
+                } else {
+                    db.get().collection(CARTCOLLECTION).updateOne({ user: ObjectId(userId) },
+                        {
+                            $push: { products: prodObj }
+
+                        }).then((response) => {
+                            response.status= true
+                            response.newToCart=true
+                            resolve(response)
+                        })
+                }
+
+            }else{
+                await db.get().collection(CARTCOLLECTION).insertOne({
+                    user: ObjectId(userId),
+                    products: [prodObj]
+                }).then((response) => {
+                    response.status= true
+                    response.newToCart=true
+                    resolve(response)
+                })
+            }
+        })
+    },
 cartData:(userId)=>{
     
     return new Promise(async(resolve,reject)=>{

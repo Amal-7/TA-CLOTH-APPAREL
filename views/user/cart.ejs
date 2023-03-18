@@ -43,13 +43,13 @@
                                     <td class="product-col">
                                         <div class="product">
                                             <figure class="product-media">
-                                                <a href="#">
+                                                <a href="/product/<%= productDetails.product._id %>">
                                                     <img src="/product-images/<%= productDetails.product.productImages[0] %>" alt="Product image">
                                                 </a>
                                             </figure>
 
                                             <h3 class="product-title">
-                                                <a href="/product"><%= productDetails.product.title %></a>
+                                                <a href="/product/<%= productDetails.product._id %>"><%= productDetails.product.title %></a>
                                             </h3><!-- End .product-title -->
                                         </div><!-- End .product -->
                                     </td>

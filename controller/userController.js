@@ -349,6 +349,7 @@ module.exports = {
     },
     addToCart: (req, res) => {
         try{
+        
         userHelper.addToCart(req.params.id, req.session.user._id).then((product) => {
             res.json(product)
         })
@@ -356,6 +357,17 @@ module.exports = {
         res.render('error', { message: error.message, code: 500, layout: 'error-layout' });  
         }
     },
+    addToCartFromPage:(req,res)=>{
+        try {
+            userHelper.addProductToCart(req.body, req.session.user._id).then((status) => {
+                res.json(status)
+            })
+        } catch (error) {
+            res.render('error', { message: error.message, code: 500, layout: 'error-layout' });     
+        }
+
+    },
+
     cart: async (req, res) => {
         try{
         let user = req.session.user
