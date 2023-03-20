@@ -21,7 +21,7 @@
                         <div class="col-md-9">
                             <div class="mb-4">
                                 <label class="form-label">Product title</label>
-                                <input type="text" placeholder="Type here" name="title" class="form-control">
+                                <input type="text" placeholder="Type here" name="title" class="form-control" required>
                             </div>
                             <div class="mb-4">
                                 <label class="form-label">Description</label>
@@ -45,7 +45,7 @@
                         <div class="col-md-9">
                             <div class="mb-4">
                                 <label class="form-label">Cost in INR</label>
-                                <input type="number" placeholder="00.0" name="price" class="form-control">
+                                <input type="number" placeholder="00.0" name="price" min="1" class="form-control" required>
                             </div>
                         </div> <!-- col.// -->
                     </div> <!-- row.// -->
@@ -58,7 +58,7 @@
                             <div class="mb-4">
                                 <% for(var category of categories) {  %>
                                 <label class="mb-2 form-check form-check-inline" style="width: 45%;">
-                                    <input class="form-check-input" checked="" value="<%= category.name %>" name="category" type="radio">
+                                    <input class="form-check-input" checked="" value="<%= category.name %>" name="category" type="radio" >
                                     <span class="form-check-label"> <%= category.name %> </span>
                                 </label>
                                 <% } %>
@@ -105,7 +105,7 @@
                         <div class="col-md-9">
                             <div class="mb-4">
                                 <label class="form-label">Stock Details</label>
-                                <input type="number" placeholder="0" name="quantity" class="form-control">
+                                <input type="number" placeholder="0" name="quantity" min="1" class="form-control" required>
                             </div>
                         </div> <!-- col.// -->
                     </div>
@@ -127,7 +127,7 @@
                                 </div>
                                 
                                   
-                                <input class="form-control" type="file" id="file-ip-1" accept="image/*"  onchange="showPreview(event);"  name="images" multiple>
+                                <input class="form-control" type="file" id="file-ip-1" accept="image/*"  onchange="showPreview(event);"  name="images" multiple required>
                             </div>
                         </div> <!-- col.// -->
                     </div> <!-- .row end// -->

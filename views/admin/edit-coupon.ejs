@@ -21,7 +21,7 @@
                         <div class="col-md-9">
                             <div class="mb-4">
                                 <label class="form-label">Coupon Code</label>
-                                <input type="text" placeholder="Type here" name="code" value="<%= coupon.code %>" class="form-control">
+                                <input type="text" placeholder="Type here" name="code" value="<%= coupon.code %>" class="form-control" required>
                             </div>
                             <!-- <div class="mb-4">
                                 <label class="form-label">Description</label>
@@ -45,7 +45,7 @@
                         <div class="col-md-9">
                             <div class="mb-4">
                                 <label class="form-label">Cost in INR</label>
-                                <input type="number" placeholder="00.0" name="maxDiscount" value="<%= coupon.maxDiscount %>" class="form-control">
+                                <input type="number" placeholder="00.0" name="maxDiscount" min="1" value="<%= coupon.maxDiscount %>" class="form-control" required>
                             </div>
                         </div> <!-- col.// -->
                     </div> <!-- row.// -->
@@ -58,7 +58,7 @@
                         <div class="col-md-9">
                             <div class="mb-4">
                                 <label class="form-label">%</label>
-                                <input type="number" placeholder="0" name="percentage" value="<%= coupon.percentage %>" class="form-control">
+                                <input type="number" placeholder="0" min="1" name="percentage" value="<%= coupon.percentage %>" class="form-control" required>
                                 <input type="" placeholder="0" name="id"  value="<%= coupon._id %>" class="form-control d-none">
                             </div>
                         </div> <!-- col.// -->
@@ -96,7 +96,7 @@
                         <div class="col-md-9">
                             <div class="mb-4">
                                 <label class="form-label">Cost in INR</label>
-                                <input type="number" placeholder="0" name="minCartPrice" value="<%= coupon.minCartPrice %>" class="form-control">
+                                <input type="number" placeholder="0" name="minCartPrice" min="1" value="<%= coupon.minCartPrice %>" class="form-control" required>
                             </div>
                         </div> <!-- col.// -->
                     </div>
@@ -109,7 +109,7 @@
                         <div class="col-md-9">
                             <div class="mb-4">
                                 <label class="form-label">Date</label>
-                                <input type="date" placeholder="" name="expiry" value="<%= coupon.expiry %>" class="form-control">
+                                <input type="date" placeholder="" name="expiry" value="<%= coupon.expiry %>" class="form-control" required>
                             </div>
                         </div> <!-- col.// -->
                     </div> <!-- row.// -->

@@ -21,7 +21,7 @@
                         <div class="col-md-9">
                             <div class="mb-4">
                                 <label class="form-label">Coupon Code</label>
-                                <input type="text" placeholder="Type here" name="code" class="form-control">
+                                <input type="text" placeholder="Type here" name="code" class="form-control" required>
                             </div>
                             <!-- <div class="mb-4">
                                 <label class="form-label">Description</label>
@@ -45,7 +45,7 @@
                         <div class="col-md-9">
                             <div class="mb-4">
                                 <label class="form-label">Cost in INR</label>
-                                <input type="number" placeholder="00.0" name="maxDiscount" class="form-control">
+                                <input type="number" placeholder="00.0" name="maxDiscount" min="0" class="form-control" required>
                             </div>
                         </div> <!-- col.// -->
                     </div> <!-- row.// -->
@@ -58,7 +58,7 @@
                         <div class="col-md-9">
                             <div class="mb-4">
                                 <label class="form-label">%</label>
-                                <input type="number" placeholder="0" name="percentage" class="form-control">
+                                <input type="number" placeholder="0" min="0" name="percentage" class="form-control" required>
                             </div>
                         </div> <!-- col.// -->
                     </div>
@@ -72,13 +72,13 @@
                             <div class="mb-4">
                                 <% for(var category of categories) {  %>
                                 <label class="mb-2 form-check form-check-inline" style="width: 45%;">
-                                    <input class="form-check-input" checked="" value="<%= category.name %>" name="category" type="radio">
+                                    <input class="form-check-input" checked="" value="<%= category.name %>" name="category" type="radio" >
                                     <span class="form-check-label"> <%= category.name %> </span>
                                 </label>
                                 <% } %>
 
                                 <label class="mb-2 form-check form-check-inline" style="width: 45%;">
-                                    <input class="form-check-input" checked="" value="all" name="category" type="radio">
+                                    <input class="form-check-input" checked="" value="all" name="category" type="radio" >
                                     <span class="form-check-label"> All </span>
                                 </label>
 
@@ -95,7 +95,7 @@
                         <div class="col-md-9">
                             <div class="mb-4">
                                 <label class="form-label">Cost in INR</label>
-                                <input type="number" placeholder="0" name="minCartPrice" class="form-control">
+                                <input type="number" placeholder="0" name="minCartPrice" min="0" class="form-control" required>
                             </div>
                         </div> <!-- col.// -->
                     </div>

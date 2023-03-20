@@ -185,6 +185,13 @@ module.exports = {
         })
         
     },
+    totalOrderView:(pageNum,lmt)=>{
+        let skipNum=parseInt((pageNum-1)*lmt)
+        return new Promise(async(resolve,reject)=>{
+            let orders = await db.get().collection(ORDERCOLLECTION).find().sort({'date':-1}).skip(skipNum).limit(lmt).toArray()
+            resolve(orders)
+        })
+    },
 
     orderDetails:(orderID)=>{
         return new Promise(async(resolve,reject)=>{

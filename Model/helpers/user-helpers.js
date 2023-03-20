@@ -824,9 +824,15 @@ defaultAddress:(userId)=>{
     })
 },
 
+totalOrderView:(pageNum,lmt,userId)=>{
+    let skipNum=parseInt((pageNum-1)*lmt)
+    return new Promise(async(resolve,reject)=>{
+        let orders = await db.get().collection(ORDERCOLLECTION).find({$and:[{user:ObjectId(userId)},{status:{$nin:['pending']}}]}).sort({'date':-1}).skip(skipNum).limit(lmt).toArray()
+        resolve(orders)
+    })
+},
 
-
-totalOrderView:(pageNum,lmt)=>{
+totalProductsView:(pageNum,lmt)=>{
     let skipNum=parseInt((pageNum-1)*lmt)
     return new Promise(async(resolve,reject)=>{
         let products=await db.get().collection(PRODUCTCOLLECTION).find().skip(skipNum).limit(lmt).toArray()

@@ -56,9 +56,9 @@ router.get('/products',products);
 router.get('/product/:id',product);
 
 /*add to cart*/ 
-router.get('/addToCart/:id',addToCart);
+router.get('/addToCart/:id',user,addToCart);
 /* add to cart from procuct page*/
-router.post('/addToCart',addToCartFromPage);
+router.post('/addToCart',user,addToCartFromPage);
 
 /* Cart Details*/ 
 router.route('/cart')

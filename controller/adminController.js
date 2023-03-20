@@ -311,9 +311,24 @@ module.exports = {
     getOrders: (req, res) => {
         try{
         let status = req.session.adminLoggedIn
-        adminHelper.orderList().then((orderList) => {
-            console.log(orderList);
-            res.render('admin/orders', { layout, status, orderList })
+        adminHelper.orderList().then(async(orderData) => {
+          
+            
+            let pageCount = req.query.page || 1
+            let pageNum = parseInt(pageCount)
+            console.log(pageNum, ':pagenumber');
+            let totalOrders = orderData.length
+       
+            let lmt = 10
+            let pages = [];
+            for (let i = 1; i <= Math.ceil(totalOrders / lmt); i++) {
+                pages.push(i)
+            }
+
+            console.log(pages, 'pagesssss');
+
+            let orderList = await adminHelper.totalOrderView(pageNum, lmt)
+            res.render('admin/orders', { layout, status, orderList ,pages})
         })
     } catch (error) {
         res.render('error', { message: error.message, code: 500, layout: 'error-layout' ,admin:true});  
