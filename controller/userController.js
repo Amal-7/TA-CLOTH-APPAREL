@@ -805,7 +805,7 @@ module.exports = {
             let user = req.session.user
             cartCount = await userHelper.cartProdCount(user._id)
             userHelper.getWishList(req.session.user._id).then((productList) => {
-                res.render('user/wishlist', { user, cartCount, productList })
+                res.render('user/wishList', { user, cartCount, productList })
             })
         } catch (error) {
             res.render('error', { message: error.message, code: 500, layout: 'error-layout' })
