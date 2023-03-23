@@ -46,7 +46,7 @@ module.exports = {
 
          ]).toArray()
 
-            console.log('sum',order);
+            
             resolve(order[0])
         })
 
@@ -94,16 +94,16 @@ module.exports = {
     },
     categoryDelete:(categId)=>{
         return new Promise(async (resolve,reject)=>{
-            console.log(categId)
+     
             await db.get().collection(PRODUCTCATEGORY).deleteOne({_id:ObjectId(categId)}).then((response)=>{
-                console.log(response)
+             
                 resolve(response) 
             })
             
         })
     },
     editCategory:(categData)=>{
-        console.log(categData);
+        
         return new Promise((resolve,reject)=>{
             db.get().collection(PRODUCTCATEGORY).updateOne({_id:ObjectId(categData.id)},{$set:{
                 name:categData.name,
@@ -131,7 +131,7 @@ module.exports = {
         })
     },
     deleteProduct:(id)=>{
-        console.log(id);
+       
         return new Promise(async(resolve,reject)=>{
             await db.get().collection(PRODUCTCOLLECTION).deleteOne({_id:ObjectId(id)}).then((response)=>{
                 resolve(response)
@@ -261,7 +261,7 @@ module.exports = {
         
             
            ]).toArray()
-           console.log(orderData);
+           
         
             resolve(orderData)
         })
@@ -295,7 +295,7 @@ module.exports = {
     monthlyEarning:()=>{
         return new Promise(async(resolve,reject)=>{
             let currentMonth = new Date().getMonth()+1;
-            console.log('current month',currentMonth);
+            
            let monthRevenue = await db.get().collection(ORDERCOLLECTION).aggregate([
                 {
                     $match:{
@@ -324,7 +324,7 @@ module.exports = {
                
                 
             ]).toArray()
-            console.log(monthRevenue);
+         
             if(monthRevenue.length<=0) 
                 resolve(0)
             else
@@ -363,7 +363,6 @@ module.exports = {
                
                 
             ]).toArray()
-            console.log('orderss====',orders)
             resolve(orders)
 
            
@@ -394,7 +393,7 @@ module.exports = {
                     }
                 }
             ]).toArray()
-            console.log('orderstatus==',orderStatus);
+           
             resolve(orderStatus)
         })
     },
@@ -441,7 +440,7 @@ module.exports = {
     getCouponDetails:(id)=>{
         return new Promise((resolve,reject)=>{
             db.get().collection(COUPONCOLLECTION).findOne({_id:ObjectId(id)}).then((response)=>{
-                console.log(response,'response');
+               
                 resolve(response)
             })
         })

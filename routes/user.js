@@ -6,6 +6,7 @@ const {home,loginPage,userLogin,userSignup,userLogout,userProfile,editProfile,lo
     myOrders,orderDetails,orderReturn,orderCancel,addAddress,newAddress,
     changeAddress,changeAddressTo,paypalSucces,applyCoupon,getMenProducts,
     getWomenProducts,searchProduct, verifyPayment,verifyRazorpay,razorpaySuccess,addToCartFromPage,
+    addtoWishlist,wishlist,removeFromWishlist
     } = require('../controller/userController');
 const {user} = require('../controller/authentication');
 
@@ -114,8 +115,11 @@ router.get('/women',getWomenProducts)
 
 router.get('/search',searchProduct)
 
-
-
+/* Wishlist*/ 
+router.route('/wishlist')
+    .get(user,wishlist)
+    .post(user,addtoWishlist)
+    .delete(user,removeFromWishlist)
 
 
 

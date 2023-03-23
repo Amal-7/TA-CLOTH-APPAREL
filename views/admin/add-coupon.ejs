@@ -21,7 +21,7 @@
                         <div class="col-md-9">
                             <div class="mb-4">
                                 <label class="form-label">Coupon Code</label>
-                                <input type="text" placeholder="Type here" name="code" class="form-control" required>
+                                <input type="text" id="username1" placeholder="Type here" name="code" class="form-control" required>
                             </div>
                             <!-- <div class="mb-4">
                                 <label class="form-label">Description</label>
@@ -108,7 +108,7 @@
                         <div class="col-md-9">
                             <div class="mb-4">
                                 <label class="form-label">Date</label>
-                                <input type="date" placeholder="" name="expiry" class="form-control">
+                                <input type="date" placeholder="" id="userdate" onchange="TDate()" name="expiry" class="form-control">
                             </div>
                         </div> <!-- col.// -->
                     </div> <!-- row.// -->
@@ -124,6 +124,34 @@
     </div>
     </div>
 </section>
+<script>
+    function TDate() {
+    var UserDate = document.getElementById("userdate").value;
+    var ToDate = new Date();
+
+    if (new Date(UserDate).getTime() <= ToDate.getTime()) {
+        
+          Swal.fire("The Date must be Bigger or Equal to today date");
+          return false;
+     }
+    return true;
+}
+
+
+   //Spcaebar hidingg Code....
+   let  categoryIput = document.getElementById("username1");
+   categoryIput.addEventListener('keypress', (event)=>{    
+     if(event.code=== "Space"){
+      event.preventDefault(); 
+    }
+})
+
+
+
+</script>
+
+
+
 
 
 

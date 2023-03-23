@@ -1,5 +1,6 @@
 const layout = 'admin-layout';
 const adminHelper = require('../Model/helpers/admin-helpers');
+const { user } = require('./authentication');
 
 
 
@@ -48,7 +49,7 @@ module.exports = {
 
             let totalProducts = products.length
             let categCount = categories.length
-            console.log('payMethod', payMethod);
+          
 
             res.render('admin/index', { layout, status, dashboard, totalProducts, categCount, earnings, monthWise, month, payMethod, orderStatus });
 
@@ -121,7 +122,8 @@ module.exports = {
         try{
         let userId = req.params.id
         adminHelper.userStatus(userId).then((user) => {
-            res.redirect('/admin/view-users')
+            res.json({status:true})
+           
         })
     }catch (error) {
         res.render('error', { message: error.message, code: 500, layout: 'error-layout' ,admin:true});
@@ -178,7 +180,6 @@ module.exports = {
     deleteCategory: (req, res, next) => {
         try{
         let categId = req.body.id;
-        console.log(categId)
         adminHelper.categoryDelete(categId).then((response) => {
             res.json({ status: true })
         })
@@ -235,14 +236,12 @@ module.exports = {
         let status = req.session.adminLoggedIn;
         if (status) {
             const files = req.files
-            console.log(files);
             const fileName = files.map((file) => {
                 return file.filename
             })
             let productData = req.body
             productData.price = parseInt(productData.price);
             productData.quantity = parseInt(productData.quantity);
-            console.log(req.body);
             productData.productImages = fileName
 
             adminHelper.addProduct(productData).then((result) => {
@@ -259,7 +258,6 @@ module.exports = {
     },
     deleteProduct: (req, res, next) => {
         try{
-        console.log(req.body)
         let status = req.session.adminLoggedIn;
         if (status) {
             adminHelper.deleteProduct(req.body.id).then((response) => {
@@ -316,7 +314,6 @@ module.exports = {
             
             let pageCount = req.query.page || 1
             let pageNum = parseInt(pageCount)
-            console.log(pageNum, ':pagenumber');
             let totalOrders = orderData.length
        
             let lmt = 10
@@ -325,7 +322,6 @@ module.exports = {
                 pages.push(i)
             }
 
-            console.log(pages, 'pagesssss');
 
             let orderList = await adminHelper.totalOrderView(pageNum, lmt)
             res.render('admin/orders', { layout, status, orderList ,pages})
@@ -362,7 +358,6 @@ module.exports = {
         try{
             let status = req.session.adminLoggedIn
             let revenue = await adminHelper.dashboard()
-            console.log('revenue', revenue);
             adminHelper.reportList().then((orders) => {
                 orders.revenue = revenue.totalAmount
                 res.render('admin/report', { layout, orders, status })

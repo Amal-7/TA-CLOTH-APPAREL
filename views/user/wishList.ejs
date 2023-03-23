@@ -1,0 +1,93 @@
+<main class="main">
+    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title">Wishlist<span>Shop</span></h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/products">Shop</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <% if(productList.length>0){ %>
+
+    <div class="page-content  px-5 ">
+        <div class="container">
+            <table class="table table-wishlist table-mobile">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>                    
+                     
+                       
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% productList.forEach(product=>{ %>
+                    <tr id="<%=product.product._id%>">
+                        <td class="product-col">
+                            <div class="product">
+                                <figure class="product-media">
+                                    <a href="/product/<%= product.product._id %>">
+                                        <img src="/product-images/<%=product.product.productImages[0]%>" alt="Product image">
+                                    </a>
+                                </figure>
+
+                                <h3 class="product-title">
+                                    <a href="/product/<%= product.product._id %>"><%= product.product.title %></a>
+                                </h3><!-- End .product-title -->
+                            </div><!-- End .product -->
+                        </td>
+                        <td class="price-col"><%= product.product.price %></td>
+                       
+                        <td class="remove-col"><button class="btn-remove" onclick="removeFromWishlist('<%=product.product._id%>')"><i class="icon-close"></i></button></td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                   <% }) %>
+                </tbody>
+            </table><!-- End .table table-wishlist -->
+            <% } else { %>
+
+
+
+                <% } %>
+          
+        </div><!-- End .container -->
+    </div><!-- End .page-content -->
+</main><!-- End .main -->
+
+<script>
+   function removeFromWishlist(productId){
+        $.ajax({
+            url:'/wishlist',
+            method:'delete',
+            data:{
+                prodId:productId
+            },
+            success:(res)=>{
+                if(res.status){
+                    Toastify({
+                        text: "Item removed from wishlist",
+                        duration: 3000,
+                        gravity: "bottom",
+                        position: "center",  
+                        style: {
+                            background: '#FA8072',
+                        
+                        },
+                    }).showToast();
+
+                    $(`#${productId}`).addClass('d-none')
+
+                }
+            }
+        })
+    }
+</script>

@@ -1,7 +1,8 @@
 var db = require('../connection')
-var {USERCOLLECTION,PRODUCTCOLLECTION,CARTCOLLECTION,ORDERCOLLECTION,PRODUCTCATEGORY,COUPONCOLLECTION} = require('../userCollection')
+var {USERCOLLECTION,PRODUCTCOLLECTION,CARTCOLLECTION,ORDERCOLLECTION,PRODUCTCATEGORY,COUPONCOLLECTION,WISHLISTCOLLECTION} = require('../userCollection')
 var bcrypt = require('bcrypt')
 const { ObjectId } = require('mongodb')
+const { wishlist } = require('../../controller/userController')
 
 
 
@@ -46,7 +47,6 @@ doLogin: (userData) => {
                     if(user.isActive){
                         response.user = user;
                         response.status = true;
-                        console.log(response);
                         resolve(response);
 
                     }else{
@@ -121,7 +121,6 @@ resetPassword:(userId,data)=>{
 }
 ,
 getUser:(userId)=>{
-    console.log(userId,'rfdfsgfs');
     return new Promise(async(resolve,reject)=>{
     let user =  await db.get().collection(USERCOLLECTION).findOne({_id:ObjectId(userId)})
        
@@ -131,10 +130,8 @@ getUser:(userId)=>{
 
 ,
 editProfile:(data,userId)=>{
-    console.log(data,'for editing');
     return new Promise(async(resolve,reject)=>{
         let user =await db.get().collection(USERCOLLECTION).findOne({_id:ObjectId(userId)})
-        console.log('user=',user);
         if(data['old-password']){
          let   newPassword = data['new-password'];
          let   oldPassword = data['old-password'];
@@ -241,7 +238,6 @@ getProduct:(id)=>{
           
             if (userCart) {
                 let proExist = userCart.products.findIndex(product => product.item == prodId)
-                console.log('product=',proExist);
                 if (proExist!=-1) {
                     db.get().collection(CARTCOLLECTION).updateOne({user:ObjectId(userId), 'products.item': ObjectId(prodId) },
                         {
@@ -566,7 +562,6 @@ placeOrder:(order,userId,total,products,user,discount)=>{
             db.get().collection(ORDERCOLLECTION).findOne({_id:ObjectId(response.insertedId)}).then((orderID)=>{
            
                 resolve(orderID)
-                console.log(orderID);
              })
         })
        
@@ -669,7 +664,6 @@ orderDetails:(orderID)=>{
     
         
        ]).toArray()
-       console.log(orderData);
       
         resolve(orderData)
     })
@@ -690,7 +684,6 @@ returnOrder:(orderID)=>{
 
 addNewAddress:(order)=>{
     return new Promise(async(resolve,reject)=>{
-        console.log(order);
         let address = {
             
             addressId: Math.round(Math.random()*1E9),
@@ -727,7 +720,6 @@ addNewAddress:(order)=>{
 },
 
 userAddresses:(userId)=>{
-    console.log('userid=',userId);
     return new Promise(async(resolve,reject)=>{
     let addresses =  await  db.get().collection(USERCOLLECTION).aggregate([
         {$match:{
@@ -844,7 +836,6 @@ couponCheck:(data,userId)=>{
     data.total = parseInt(data.total)
     return new Promise(async(resolve,reject)=>{
        let coupon = await db.get().collection(COUPONCOLLECTION).findOne({code:data.code})
-       console.log(coupon,'coupon');
        if(coupon){
          let expiryDate = new Date(coupon.expiry)
          let newDate = new Date()
@@ -871,7 +862,6 @@ search:(word)=>{
                 {category:{$regex:word,'$options':'i'}}
             ]
         }).toArray()
-        console.log(products,'products');
         if(products.length>0) 
             resolve(products)
         else
@@ -881,7 +871,6 @@ search:(word)=>{
 },
 verifyPaymentRazorpay:(orderID)=>{
     return new Promise((resolve,reject)=>{
-        console.log(orderID,'orderid');
         orderID = parseInt(orderID)
         db.get().collection(ORDERCOLLECTION).updateOne({
             orderID:orderID
@@ -894,6 +883,91 @@ verifyPaymentRazorpay:(orderID)=>{
             resolve(orderID)
         })
     })
+},
+
+toWishlist:(prodId,userId)=>{
+    return new Promise(async(resolve,reject)=>{
+        let prod = {item:ObjectId(prodId)}
+        let userWishlist = await db.get().collection(WISHLISTCOLLECTION).findOne({ user: ObjectId(userId) })
+            
+            if (userWishlist) {
+                let proExist = userWishlist.products.findIndex(product => product.item == prodId)
+                if (proExist!=-1) {
+                   
+                    resolve()
+                   
+                } else {
+                    db.get().collection(WISHLISTCOLLECTION).updateOne({ user: ObjectId(userId) },
+                    {
+                        $push: { products: prod }
+
+                    }).then((response) => {
+                        resolve({status:true})
+                    })
+                }
+            } else {
+                await db.get().collection(WISHLISTCOLLECTION).insertOne({
+                    user: ObjectId(userId),
+                    products: [prod]
+                }).then((response) => {
+                    resolve({status:true})
+                })
+            }
+        })
+        
+    },
+    getWishList:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+          let userWishlist = await  db.get().collection(WISHLISTCOLLECTION).find({user:ObjectId(userId)}).toArray()
+          if(userWishlist){
+            let products =await db.get().collection(WISHLISTCOLLECTION).aggregate([
+                {
+                 $match:{user:ObjectId(userId)}
+                },
+                {
+                    $unwind:'$products'
+                },
+                {
+                    $project:{
+                        item:'$products.item',
+                       
+                       
+                    }
+                },
+                
+                {
+                    $lookup:{
+                        from:PRODUCTCOLLECTION,
+                        localField:'item',
+                        foreignField:'_id',
+                        as:'product'
+                    }
+                },
+                {
+                    $project:{
+                        item:1,
+                        quantity:1,
+                        product:{$arrayElemAt:['$product',0]},
+                       
+                    }
+                }
+            ]).toArray()
+            resolve(products)
+          }
+          resolve(userWishlist)
+        })
+    },
+
+    deleteFromWishlist:(prodId,userId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(WISHLISTCOLLECTION).updateOne({user:ObjectId(userId)},
+            {
+              $pull: { products:{item:ObjectId(prodId)} }
+            }).then((res)=>{
+                resolve()
+            })
+        })
+    }
 }
 
 
@@ -902,4 +976,3 @@ verifyPaymentRazorpay:(orderID)=>{
 
 
 
-}

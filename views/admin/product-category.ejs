@@ -15,7 +15,7 @@
                     <form action="/admin/category" method="post">
                         <div class="mb-4">
                             <label for="product_name" class="form-label">Name</label>
-                            <input type="text" placeholder="Type here"   class="form-control" id="product_name" name="name" />
+                            <input type="text" placeholder="Type here" id="username1"   class="form-control" id="product_name" name="name" />
                         </div>
                         <!-- <div class="mb-4">
                             <label for="product_slug" class="form-label">Slug</label>
@@ -110,6 +110,15 @@
         });
 
     }
+
+     //Spcaebar hidingg Code....
+ let  categoryIput = document.getElementById("username1");
+   categoryIput.addEventListener('keypress', (event)=>{    
+     if(event.code=== "Space"){
+      event.preventDefault(); 
+    }
+})
+    
 
 
         

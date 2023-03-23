@@ -183,16 +183,30 @@
     <script>
 
         function dltProduct(productId){
-            $.ajax({
-                url:'/cartItemDlt/'+productId,
-                method:'delete',
-                success:(response)=>{
-                    if(response.removeProduct){
-                            alert("product removed from cart")
-                            location.reload()
+            Swal.fire({
+                title: 'Are you sure?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url:'/cartItemDlt/'+productId,
+                        method:'delete',
+                        success:(response)=>{
+                            if(response.removeProduct){
+                                Swal.fire("product removed from cart")
+                                
+                                location.reload()
+                        }
+                        }
+                    })
+                   
                 }
-            }
             })
+            
         }
        async function changeQty(productId,cart,total,cartTotal,value){
         
@@ -212,7 +226,7 @@
                 method:'patch',
                 success:async(response)=>{
                     if(response.removeProduct){
-                            alert("product removed from cart")
+                        Swal.fire("product removed from cart")
                             location.reload()
                        
                 

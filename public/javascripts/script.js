@@ -5,7 +5,7 @@ function addToCart(proId){
             method:'get',
             success:(response)=>{
                 if(response.status){
-
+ 
                     
               Toastify({
                 text: "Item Added To Cart",
@@ -25,5 +25,40 @@ function addToCart(proId){
             }
         })
     }
+
+
+
+    function addToWishList(proId){
+       
+        $.ajax
+            ({
+                url:'/wishlist',
+                method:'post',
+                data:{
+                    prodId:proId
+                },
+                success:(response)=>{
+                    if(response.status){
+    
+                        
+                  Toastify({
+                    text: "Item Added To Wishlist",
+                    duration: 3000,
+                    gravity: "bottom",
+                    position: "center",  
+                    style: {
+                        background: '#FA8072',
+                       
+                    },
+                }).showToast();
+                       
+                    }
+                }
+            })
+        }
+
+
+
+        
 
 

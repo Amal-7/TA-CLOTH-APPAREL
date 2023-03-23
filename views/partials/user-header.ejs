@@ -34,6 +34,7 @@
                                 <li><a href="">About Us</a></li>
                                 <li><a href="">Contact Us</a></li>
                                 <% if(locals.user) { %>
+                                    <li><a href="/wishlist"><i class="icon-heart-o"></i>My Wishlist <span></span></a></li>
                                     <li ><a href="/logout" ><i   class="icon-user"></i>Logout</a></li>
                                 <% } else { %>
                                     <li ><a href="/login" ><i   class="icon-user"></i>Login</a></li>

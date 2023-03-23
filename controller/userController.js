@@ -119,14 +119,12 @@ module.exports = {
     editProfile: (req, res) => {
         try {
             let user = req.session.user
-            console.log(req.body);
             userHelper.editProfile(req.body, user._id).then(async (response) => {
                 if (response.status) {
                     req.session.user = await userHelper.getUser(user._id)
                     res.redirect('/my-profile')
                 } else {
                     let errorMsg = response.errorMsg
-                    console.log(errorMsg);
                     res.render('user/myprofile', { errorMsg, user })
 
                 }
@@ -163,7 +161,6 @@ module.exports = {
                     if (data.userNum) {
                         req.session.mobile = req.body.mobile;
                         req.session.user = data.user
-                        console.log(otp.serviceId, 'service id');
                         client.verify.services(process.env.serviceId)
                             .verifications.create({
                                 to: `+91${req.body.mobile}`,
@@ -193,7 +190,6 @@ module.exports = {
                         to: `+91${req.session.mobile}`,
                         code: req.body.otp
                     }).then((data) => {
-                        console.log(data)
                         if (data.valid) {
                             req.session.userLoggedIn = true;
                             res.redirect('/');
@@ -235,7 +231,6 @@ module.exports = {
             } else {
                 userHelper.verifyNum(req.body).then((data) => {
                     if (data.userNum) {
-                        console.log(req.body.mobile)
 
                         req.session.mobile = req.body.mobile;
                         req.session.user = data.user
@@ -291,7 +286,6 @@ module.exports = {
     resetPassword: (req, res) => {
         try {
             userHelper.resetPassword(req.session.user._id, req.body).then((status) => {
-                console.log(response);
                 let errorMsg = status
                 res.render('user/login', { errorMsg })
             })
@@ -303,20 +297,16 @@ module.exports = {
 
     products: async (req, res) => {
         try {
-            
+
             let productsTotal = await userHelper.getAllProducts()
             let pageCount = req.query.page || 1
             let pageNum = parseInt(pageCount)
-            console.log(pageNum, ':pagenumber');
             let totalProducts = productsTotal.length
-            console.log(totalProducts, 'totalordersssss');
             let lmt = 10
             let pages = [];
             for (let i = 1; i <= Math.ceil(totalProducts / lmt); i++) {
                 pages.push(i)
             }
-
-            console.log(pages, 'pagesssss');
 
             let products = await userHelper.totalProductsView(pageNum, lmt)
             if (req.session.userLoggedIn) {
@@ -419,12 +409,10 @@ module.exports = {
             let cartPrice = await userHelper.cartTotal(user._id)
 
             let address = await userHelper.defaultAddress(user._id)
-            console.log(address);
             if (cartPrice == 0) {
                 res.redirect('/cart')
             } else {
                 userHelper.cartData(user._id).then((cartItems) => {
-                    console.log('cartItems', cartItems);
                     cartItems.cartPrice = cartPrice
                     res.render('user/checkout', { user, cartItems, cartCount, address })
                 })
@@ -443,7 +431,6 @@ module.exports = {
             if (req.body.discount) { cartPrice = cartPrice - discount }
 
             userHelper.placeOrder(req.body, user._id, cartPrice, products.products, user, discount).then(async (response) => {
-                console.log('response=', response);
                 let orderID = response.orderID
                 req.session.orderID = orderID
                 req.session.total = response.totalAmount
@@ -497,7 +484,6 @@ module.exports = {
 
 
                 } else if (paymentMethod == 'razorpay') {
-                    console.log('razorpay key', process.env.RAZOR_KEY_ID);
                     const instance = new Razorpay({
                         key_id: process.env.RAZOR_KEY_ID,
                         key_secret: process.env.RAZOR_SECRET_ID
@@ -511,10 +497,8 @@ module.exports = {
 
                     instance.orders.create(options, (error, order) => {
                         if (error) {
-                            console.log(error);
                             res.redirect('/checkout')
                         }
-                        console.log('order= ==', order);
                         res.render('user/razorpay', { order })
 
                     })
@@ -542,7 +526,6 @@ module.exports = {
         try {
             let orderid = req.body['order[orderid]']
             req.session.orderID = orderid
-            console.log(req.body);
             let signature = req.body['payment[razorpay_signature]']
             signature.trim()
             let hmac = crypto.createHmac('sha256', process.env.RAZOR_SECRET_ID)
@@ -550,7 +533,6 @@ module.exports = {
             hmac = hmac.digest('hex')
             hmac.trim()
 
-            console.log(signature == hmac);
             if (signature == hmac) {
 
                 userHelper.verifyPaymentRazorpay(orderid).then((response) => {
@@ -571,7 +553,6 @@ module.exports = {
     // paypal order success
     paypalSucces: (req, res) => {
         try {
-            console.log('query', req.query);
             const payerId = req.query.PayerID;
             const paymentId = req.query.paymentId;
             let orderID = req.session.orderID
@@ -592,10 +573,8 @@ module.exports = {
             paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
                 //When error occurs when due to non-existent transaction, throw an error else log the transaction details in the console then send a Success string reposponse to the user.
                 if (error) {
-                    console.log(error.response);
                     throw error;
                 } else {
-                    console.log(JSON.stringify(payment));
 
                     userHelper.paymentStatusChange(orderID, user._id).then((response) => {
                         res.render('user/order-confirmation', { user, orderID, cartCount: 0 })
@@ -628,28 +607,26 @@ module.exports = {
     },
     myOrders: async (req, res) => {
         try {
-            
+
             let user = req.session.user
             let cartCount = await userHelper.cartProdCount(user._id)
-            userHelper.orders(user._id).then(async(orderData) => {
-                 
-            
-            let pageCount = req.query.page || 1
-            let pageNum = parseInt(pageCount)
-            console.log(pageNum, ':pagenumber');
-            let totalOrders = orderData.length
-       
-            let lmt = 10
-            let pages = [];
-            for (let i = 1; i <= Math.ceil(totalOrders / lmt); i++) {
-                pages.push(i)
-            }
+            userHelper.orders(user._id).then(async (orderData) => {
 
-            console.log(pages, 'pagesssss');
 
-            let orderList = await userHelper.totalOrderView(pageNum, lmt,user._id)
-          
-                res.render('user/myorders', { user, orderList, cartCount,pages })
+                let pageCount = req.query.page || 1
+                let pageNum = parseInt(pageCount)
+                let totalOrders = orderData.length
+
+                let lmt = 10
+                let pages = [];
+                for (let i = 1; i <= Math.ceil(totalOrders / lmt); i++) {
+                    pages.push(i)
+                }
+
+
+                let orderList = await userHelper.totalOrderView(pageNum, lmt, user._id)
+
+                res.render('user/myorders', { user, orderList, cartCount, pages })
             })
         } catch (error) {
             res.render('error', { message: error.message, code: 500, layout: 'error-layout' });
@@ -660,15 +637,13 @@ module.exports = {
             let user = req.session.user
             let cartCount = await userHelper.cartProdCount(user._id)
             userHelper.orderDetails(req.params.id).then((orderData) => {
-                console.log('orderDetails', orderData);
                 let days;
                 if (orderData[0].status === 'Delivered') {
                     const newDate = new Date();
                     const deliveryDate = orderData[0].deliveredAt
                     const diffTime = Math.abs(newDate - deliveryDate);
                     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                    console.log(diffTime + " milliseconds");
-                    console.log(diffDays + " days");
+
                     days = diffDays
                 }
                 res.render('user/order-details', { user, orderData, days, cartCount })
@@ -690,7 +665,6 @@ module.exports = {
     orderReturn: (req, res) => {
         try {
             userHelper.returnOrder(req.params.id).then(() => {
-                console.log(req.param.id, 'ordreid');
                 res.redirect('/my-orders')
             })
         } catch (error) {
@@ -809,6 +783,40 @@ module.exports = {
 
             }).catch((result) => {
                 res.render('user/search', { result, cartCount, user })
+            })
+        } catch (error) {
+            res.render('error', { message: error.message, code: 500, layout: 'error-layout' })
+        }
+    },
+
+    addtoWishlist: (req, res) => {
+        try {
+            userHelper.toWishlist(req.body.prodId, req.session.user._id).then(() => {
+                res.json({ status: true })
+            })
+        }
+        catch (error) {
+            res.render('error', { message: error.message, code: 500, layout: 'error-layout' })
+        }
+
+    },
+    wishlist: async (req, res) => {
+        try {
+            let user = req.session.user
+            cartCount = await userHelper.cartProdCount(user._id)
+            userHelper.getWishList(req.session.user._id).then((productList) => {
+                res.render('user/wishlist', { user, cartCount, productList })
+            })
+        } catch (error) {
+            res.render('error', { message: error.message, code: 500, layout: 'error-layout' })
+        }
+    },
+
+    removeFromWishlist: async (req, res) => {
+        try {
+            let user = req.session.user
+            userHelper.deleteFromWishlist(req.body.prodId, user._id).then((response) => {
+                res.json({ status: true })
             })
         } catch (error) {
             res.render('error', { message: error.message, code: 500, layout: 'error-layout' })
